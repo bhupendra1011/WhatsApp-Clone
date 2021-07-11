@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName, View } from 'react-native';
 import Colors from '../constants/Colors';
-
+import useColorScheme from '../hooks/useColorScheme';
 import { Octicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 
@@ -31,15 +31,22 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
+interface RootNavigatorProps {
+  theme: string;
+}
+
 function RootNavigator() {
+
+  const colorScheme = useColorScheme();
+
   return (
     <Stack.Navigator screenOptions={{
       headerStyle: {
-        backgroundColor: Colors.light.tint,
+        backgroundColor: Colors[colorScheme].tint,
         shadowOpacity: 0,
         elevation: 0
       },
-      headerTintColor: Colors.light.background,
+      headerTintColor: Colors[colorScheme].headerText,
       headerTitleAlign: "left",
       headerTitleStyle: {
         fontWeight: "bold"
@@ -50,8 +57,8 @@ function RootNavigator() {
         title: "WhatsApp",
         headerRight: () => (
           <View style={{ flexDirection: "row", width: 60, justifyContent: "space-between", marginRight: 10 }}>
-            <Octicons name="search" size={22} color="white" />
-            <MaterialCommunityIcons name="dots-vertical" size={22} color="white" />
+            <Octicons name="search" size={22} color={Colors[colorScheme].headerText} />
+            <MaterialCommunityIcons name="dots-vertical" size={22} color={Colors[colorScheme].headerText} />
           </View>
         )
       }} />

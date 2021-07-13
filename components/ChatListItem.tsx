@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 import { ChatRoom } from '../types'
 import Avatar from './Avatar'
 import { Text, View } from './Themed'
+import moment from 'moment'
 
 interface ChatListItemProps {
     chatRoom: ChatRoom
@@ -14,17 +15,18 @@ const ChatListItem = (props: ChatListItemProps) => {
     // person with whom in converstion
     const user = chatRoom.users[1];
 
+
     return (
         <View style={styles.container}>
             <View style={styles.leftContainer}>
                 <Avatar imageUri={user.imageUri} size={50} />
                 <View style={styles.middleContainer}>
                     <Text style={styles.username}>{user.name}</Text>
-                    <Text style={styles.lastMessage}> {chatRoom.lastMessage.content} </Text>
+                    <Text ellipsizeMode='tail' numberOfLines={2} style={styles.lastMessage}> {chatRoom.lastMessage.content} </Text>
                 </View>
             </View>
-            {/* <Text>{chatRoom.lastMessage.createdAt}</Text> */}
-            <Text style={styles.time}>Yesterday</Text>
+            <Text>{moment(chatRoom.lastMessage.createdAt).format('DD/MM/YYYY')}</Text>
+
 
         </View>
     )
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         width: '100%',
+
         padding: 10
     },
     leftContainer: {
@@ -45,7 +48,8 @@ const styles = StyleSheet.create({
     },
     middleContainer: {
         marginLeft: 15,
-        justifyContent: "space-around"
+        justifyContent: "space-around",
+
     },
     chatInfo: {
 
@@ -56,11 +60,13 @@ const styles = StyleSheet.create({
     },
     lastMessage: {
         fontSize: 16,
-        color: 'grey'
+        opacity: .5,
+        width: 200
+
     },
     time: {
-        fontSize: 16,
-        color: "grey"
+        fontSize: 14,
+        opacity: .5
     }
 
 })

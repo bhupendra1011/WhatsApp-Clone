@@ -1,23 +1,31 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { ChatRoom } from '../types'
 import Avatar from './Avatar'
 import { Text, View } from './Themed'
+import { useNavigation } from "@react-navigation/native";
 import moment from 'moment'
 
 interface ChatListItemProps {
     chatRoom: ChatRoom
 }
 
+useNavigation
 
 const ChatListItem = (props: ChatListItemProps) => {
     const { chatRoom } = props;
+    const navigation = useNavigation();
+
     // person with whom in converstion
     const user = chatRoom.users[1];
 
+    const onEnterChatRoom = () => {
+        navigation.navigate('ChatRoom', { id: chatRoom.id, name: user?.name })
+    }
+
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onEnterChatRoom}>
             <View style={styles.leftContainer}>
                 <Avatar imageUri={user.imageUri} size={50} />
                 <View style={styles.middleContainer}>
@@ -28,7 +36,7 @@ const ChatListItem = (props: ChatListItemProps) => {
             <Text>{moment(chatRoom.lastMessage.createdAt).format('DD/MM/YYYY')}</Text>
 
 
-        </View>
+        </TouchableOpacity>
     )
 }
 
